@@ -3,6 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Reborn.iml" filepath="$PROJECT_DIR$/Reborn.iml" />
+      <module fileurl="file://$PROJECT_DIR$/RecyclerView01/RecyclerView01.iml" filepath="$PROJECT_DIR$/RecyclerView01/RecyclerView01.iml" />
+      <module fileurl="file://$PROJECT_DIR$/RecyclerView02/RecyclerView02.iml" filepath="$PROJECT_DIR$/RecyclerView02/RecyclerView02.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
