@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         init();
     }
+
     private void init(){
         mContext=this;
         mRecyclerView= (CustomRecyclerView) findViewById(R.id.recyclerView);
@@ -49,9 +49,7 @@ public class MainActivity extends AppCompatActivity {
         DividerItemDecoration decoration=new DividerItemDecoration(mContext,DividerItemDecoration.VERTICAL);
         mRecyclerView.addItemDecoration(decoration);
         mList=new ArrayList<String>();
-        for(int i=0;i<20;i++){
-            mList.add("Number is "+i);
-        }
+        initData();
         mRecyclerViewAdapter=new RecyclerViewAdapter(mContext,mList);
         mRecyclerView.setAdapter(mRecyclerViewAdapter);
         View headerView= LayoutInflater.from(mContext).inflate(R.layout.recyclerview_header,null);
@@ -98,7 +96,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onHeaderRefreshing() {
                 Log.i(TAG,"start onHeaderRefreshing");
-                mHandler.sendEmptyMessageDelayed(REFRESH_FINISH,1000*5);
+                initData();
+                mHandler.sendEmptyMessageDelayed(REFRESH_FINISH,1000*2);
             }
 
             @Override
@@ -108,8 +107,19 @@ public class MainActivity extends AppCompatActivity {
                 for(int i=0;i<20;i++){
                     mList.add("load more number is "+i);
                 }
-                mHandler.sendEmptyMessageDelayed(LOADMORE_FINISH,1000*5);
+                mHandler.sendEmptyMessageDelayed(LOADMORE_FINISH,1000*2);
             }
         });
     }
+
+    private void initData(){
+        mList.clear();
+        for(int i=0;i<20;i++){
+            mList.add("Number is "+i);
+        }
+        if(mRecyclerViewAdapter!=null){
+            mRecyclerViewAdapter.notifyDataSetChanged();
+        }
+    }
+
 }
