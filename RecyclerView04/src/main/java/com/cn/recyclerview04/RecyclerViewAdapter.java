@@ -1,12 +1,12 @@
-package com.cn.recyclerview03;
+package com.cn.recyclerview04;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import com.bumptech.glide.Glide;
+import android.widget.TextView;
+
 import java.util.List;
 
 /**
@@ -16,12 +16,11 @@ import java.util.List;
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.RecyclerViewHolder> {
     private Context mContext;
-    private List<Girl> mList;
+    private List<String> mList;
     private onItemClickListener mOnItemClickListener;
     private onItemLongClickListener mOnItemLongClickListener;
-    public final static String TAG="reborn";
 
-    public RecyclerViewAdapter(Context context, List<Girl> list) {
+    public RecyclerViewAdapter(Context context, List<String> list) {
         this.mContext = context;
         this.mList = list;
     }
@@ -35,21 +34,21 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
     @Override
     public void onBindViewHolder(final RecyclerViewHolder holder, int position) {
-        Glide.with(mContext).load(mList.get(position).getUrl()).into(holder.imageView);
-        holder.imageView.setOnClickListener(new View.OnClickListener() {
+        holder.textView.setText(mList.get(position));
+        holder.textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(mOnItemClickListener!=null){
                     int position=holder.getLayoutPosition();
-                    mOnItemClickListener.onItemClick(holder.imageView,position);
+                    mOnItemClickListener.onItemClick(holder.textView,position);
                 }
             }
         });
-        holder.imageView.setOnLongClickListener(new View.OnLongClickListener() {
+        holder.textView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
                 int position=holder.getLayoutPosition();
-                mOnItemLongClickListener.onItemLongClick(holder.imageView,position);
+                mOnItemLongClickListener.onItemLongClick(holder.textView,position);
                 return false;
             }
         });
@@ -70,10 +69,10 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     }
 
     class RecyclerViewHolder extends RecyclerView.ViewHolder{
-        private ImageView imageView;
+        private TextView textView;
         public RecyclerViewHolder(View itemView) {
             super(itemView);
-            imageView= (ImageView) itemView.findViewById(R.id.imageView);
+            textView= (TextView) itemView.findViewById(R.id.textView);
         }
     }
 

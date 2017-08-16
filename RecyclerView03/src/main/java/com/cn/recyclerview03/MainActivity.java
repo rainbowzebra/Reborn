@@ -8,12 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
-
 import com.alibaba.fastjson.JSON;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -100,10 +97,8 @@ public class MainActivity extends AppCompatActivity {
                             String result=response.body().string();
                             Result res=JSON.parseObject(result,Result.class);
                             response.body().close();
-                            List<Girl> list=res.getResults();
-                            for(int i=0;i<list.size();i++){
-                                mList.add(list.get(i));
-                            }
+                            List<Girl> girlsList=res.getResults();
+                            mList.addAll(girlsList);
                             Message message=new Message();
                             message.what=DOWNLOAD_FINISH;
                             mHandler.sendMessage(message);
