@@ -9,15 +9,19 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.AbsListView;
-
+/**
+ * 原创作者：谷哥的小弟
+ * 博客地址：http://blog.csdn.net/lfdfhl
+ */
 public class CustomSwipeRefreshLayout extends SwipeRefreshLayout implements SwipeRefreshLayout.OnRefreshListener {
-    protected boolean footerRefreshAble;
-    private boolean enableRefresh = true;  // 是否可以下拉刷新.
-
-    private boolean loading = false;  // 是否在加载...
-
-    private OnSwipeRefreshLayoutListener refreshLayoutListener;
+    //是否可上拉加载更多,默认为false
+    protected boolean enableLoadMoreData =false;
+    //是否可下拉刷新，默认为true
+    private boolean enablePullToRefresh = true;
+    //是否在加载数据，默认为false
+    private boolean isLoading = false;
     private Handler handler;
+    private OnSwipeRefreshLayoutListener refreshLayoutListener;
 
     public CustomSwipeRefreshLayout(Context context) {
         this(context, null);
@@ -25,9 +29,7 @@ public class CustomSwipeRefreshLayout extends SwipeRefreshLayout implements Swip
 
     public CustomSwipeRefreshLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
-
         setColorSchemeColors(Color.parseColor("#62A8DB"), Color.RED);
-        footerRefreshAble = false;
         handler = new Handler();
         setOnRefreshListener(this);
     }
@@ -35,11 +37,11 @@ public class CustomSwipeRefreshLayout extends SwipeRefreshLayout implements Swip
 
     @Override
     public boolean isEnabled() {
-        if (!enableRefresh) {
+        if (!enablePullToRefresh) {
             return false;
         }
 
-        if (loading) {
+        if (isLoading) {
             return false;
         }
 
@@ -48,7 +50,7 @@ public class CustomSwipeRefreshLayout extends SwipeRefreshLayout implements Swip
 
     @Override
     public void setRefreshing(boolean refreshing) {
-        if (loading) {
+        if (isLoading) {
             return;
         }
 
@@ -60,32 +62,26 @@ public class CustomSwipeRefreshLayout extends SwipeRefreshLayout implements Swip
 
     @Override
     public void onRefresh() {
-        loading = true;
+        isLoading = true;
         if (refreshLayoutListener != null) {
             refreshLayoutListener.onHeaderRefreshing();
         }
     }
 
-    /**
-     * 是否可以上拉
-     *
-     * @param able true 为可以
-     */
-    public void setFooterRefreshAble(boolean able) {
-        if (!enableRefresh)
+    //是否可上拉加载更多数据，true为可
+    public void setEnableLoadMoreData(boolean enable) {
+        if (!enablePullToRefresh){
             return;
-        footerRefreshAble = able;
+        }
+        enableLoadMoreData = enable;
     }
 
-    /**
-     * 设置刷新是否能使用
-     *
-     * @param enable true 能使用, 默认为true
-     */
-    public void setEnableRefresh(boolean enable) {
-        enableRefresh = enable;
+
+    //设置下拉刷新是否可用，默认为true
+    public void setEnablePullToRefresh(boolean enable) {
+        enablePullToRefresh = enable;
         if (enable == false) {
-            footerRefreshAble = false;
+            enableLoadMoreData = false;
         }
     }
 
@@ -94,31 +90,28 @@ public class CustomSwipeRefreshLayout extends SwipeRefreshLayout implements Swip
     }
 
     public void setRefreshFinished() {
-        loading = false;
-        footerRefreshAble = true;
+        isLoading = false;
+        enableLoadMoreData = true;
         setRefreshing(false);
     }
 
-    /**
-     * 设置上拉加载更多的View
-     *
-     * @param _view 支持(AbsListView、recyclerView、CustomRecyclerView)
-     */
-    public void setRefreshView(View _view) {
-        if (_view instanceof AbsListView) {
-            setAbsListView((AbsListView) _view);
-        } else if (_view instanceof RecyclerView) {
-            setRecyclerView((RecyclerView) _view);
-        } else if (_view instanceof CustomRecyclerView) {
-            setRecyclerView(((CustomRecyclerView) _view).getInnerRecyclerView());
+
+    //设置需要刷新的View
+    public void setRefreshView(View view) {
+        if (view instanceof AbsListView) {
+            setAbsListView((AbsListView) view);
+        } else if (view instanceof RecyclerView) {
+            setRecyclerView((RecyclerView) view);
+        } else if (view instanceof CustomRecyclerView) {
+            setRecyclerView(((CustomRecyclerView) view).getInnerRecyclerView());
         } else {
-            throw new RuntimeException("View type is not supported");
+            throw new RuntimeException("The view type is not supported");
         }
     }
 
     protected void onFooterRefreshing() {
-        loading = true;
-        footerRefreshAble = false;
+        isLoading = true;
+        enableLoadMoreData = false;
         if (refreshLayoutListener != null) {
             handler.postDelayed(new Runnable() {
                 public void run() {
@@ -129,11 +122,11 @@ public class CustomSwipeRefreshLayout extends SwipeRefreshLayout implements Swip
     }
 
 
-    private void setAbsListView(AbsListView _lv) {
-        _lv.setOnScrollListener(new AbsListView.OnScrollListener() {
+    private void setAbsListView(AbsListView absListView) {
+        absListView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
-                if (!footerRefreshAble || loading || refreshLayoutListener == null) {
+                if (!enableLoadMoreData || isLoading || refreshLayoutListener == null) {
                     return;
                 }
 
@@ -149,15 +142,14 @@ public class CustomSwipeRefreshLayout extends SwipeRefreshLayout implements Swip
         });
     }
 
-    private void setRecyclerView(RecyclerView _rv) {
-        _rv.addOnScrollListener(new RecyclerView.OnScrollListener() {
+    private void setRecyclerView(RecyclerView recyclerView) {
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-                if (!footerRefreshAble || loading || refreshLayoutListener == null) {
+                if (!enableLoadMoreData || isLoading || refreshLayoutListener == null) {
                     return;
                 }
-
                 if (!ViewCompat.canScrollVertically(recyclerView, 1)) {
                     onFooterRefreshing();
                 }
@@ -166,9 +158,7 @@ public class CustomSwipeRefreshLayout extends SwipeRefreshLayout implements Swip
     }
 
     public interface OnSwipeRefreshLayoutListener {
-
         void onHeaderRefreshing();
-
         void onFooterRefreshing();
     }
 }

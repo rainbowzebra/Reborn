@@ -13,10 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.List;
-
 /**
  * 原创作者：谷哥的小弟
  * 博客地址：http://blog.csdn.net/lfdfhl
@@ -53,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
         mRecyclerViewAdapter=new RecyclerViewAdapter(mContext,mList);
         mRecyclerView.setAdapter(mRecyclerViewAdapter);
         View headerView= LayoutInflater.from(mContext).inflate(R.layout.recyclerview_header,null);
-        mRecyclerView.addHeadView(headerView);
+        mRecyclerView.addHeaderView(headerView);
         mLoadMoreLinearLayout= (LinearLayout) findViewById(R.id.loadMoreLinearLayout);
         //View footerView= LayoutInflater.from(mContext).inflate(R.layout.recyclerview_footer,null);
         //mRecyclerView.addFooterView(footerView);
@@ -91,12 +89,13 @@ public class MainActivity extends AppCompatActivity {
 
         mCustomSwipeRefreshLayout= (CustomSwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
         mCustomSwipeRefreshLayout.setRefreshView(mRecyclerView);
-        mCustomSwipeRefreshLayout.setFooterRefreshAble(true);
+        mCustomSwipeRefreshLayout.setEnableLoadMoreData(true);
         mCustomSwipeRefreshLayout.setOnSwipeRefreshListener(new CustomSwipeRefreshLayout.OnSwipeRefreshLayoutListener() {
             @Override
             public void onHeaderRefreshing() {
                 Log.i(TAG,"start onHeaderRefreshing");
                 initData();
+                //模拟请求网络数据的耗时操作
                 mHandler.sendEmptyMessageDelayed(REFRESH_FINISH,1000*2);
             }
 
@@ -107,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
                 for(int i=0;i<20;i++){
                     mList.add("load more number is "+i);
                 }
+                //模拟请求网络数据的耗时操作
                 mHandler.sendEmptyMessageDelayed(LOADMORE_FINISH,1000*2);
             }
         });

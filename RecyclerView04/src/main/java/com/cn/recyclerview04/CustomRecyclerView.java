@@ -10,11 +10,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import java.util.ArrayList;
-
+/**
+ * 原创作者：谷哥的小弟
+ * 博客地址：http://blog.csdn.net/lfdfhl
+ */
 public class CustomRecyclerView extends FrameLayout {
-    WWRecyclerView recyclerView;
-    FrameLayout flEmpty;
+    MyRecyclerView recyclerView;
     RecyclerView.Adapter adapter;
+    FrameLayout emptyFrameLayout;
+
     private RecyclerView.AdapterDataObserver emptyObserver =
             new RecyclerView.AdapterDataObserver() {
                 @Override
@@ -24,9 +28,9 @@ public class CustomRecyclerView extends FrameLayout {
                         return;
                     }
                     if (adapter.getItemCount() <= 0) {
-                        flEmpty.setVisibility(View.VISIBLE);
+                        emptyFrameLayout.setVisibility(View.VISIBLE);
                     } else {
-                        flEmpty.setVisibility(View.GONE);
+                        emptyFrameLayout.setVisibility(View.GONE);
                     }
                 }
             };
@@ -37,20 +41,17 @@ public class CustomRecyclerView extends FrameLayout {
 
     public CustomRecyclerView(Context context, AttributeSet attrs) {
         super(context, attrs);
-
-        ViewGroup.LayoutParams lp = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT
-                , ViewGroup.LayoutParams.MATCH_PARENT);
-
-        flEmpty = new FrameLayout(getContext());
-        recyclerView = new WWRecyclerView(getContext());
-
-        addView(flEmpty, lp);
-        addView(recyclerView, lp);
+        int match_parent=ViewGroup.LayoutParams.MATCH_PARENT;
+        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(match_parent,match_parent);
+        emptyFrameLayout = new FrameLayout(getContext());
+        recyclerView = new MyRecyclerView(getContext());
+        addView(emptyFrameLayout, layoutParams);
+        addView(recyclerView, layoutParams);
     }
 
     public void addEmpty(View emptyView) {
-        flEmpty.removeAllViews();
-        flEmpty.addView(emptyView);
+        emptyFrameLayout.removeAllViews();
+        emptyFrameLayout.addView(emptyView);
     }
 
     public RecyclerView getInnerRecyclerView() {
@@ -66,12 +67,12 @@ public class CustomRecyclerView extends FrameLayout {
         emptyObserver.onChanged();
     }
 
-    public void addHeadView(View v) {
-        recyclerView.addHeadView(v);
+    public void addHeaderView(View v) {
+        recyclerView.addHeaderView(v);
     }
 
-    public void removeHeadView(View v) {
-        recyclerView.removeHeadView(v);
+    public void removeHeaderView(View v) {
+        recyclerView.removeHeaderView(v);
     }
 
     public void addFooterView(View v) {
@@ -82,12 +83,12 @@ public class CustomRecyclerView extends FrameLayout {
         recyclerView.removeFooterView(v);
     }
 
-    public void addItemDecoration(RecyclerView.ItemDecoration decor) {
-        recyclerView.addItemDecoration(decor);
+    public void addItemDecoration(RecyclerView.ItemDecoration itemDecoration) {
+        recyclerView.addItemDecoration(itemDecoration);
     }
 
-    public void addItemDecoration(RecyclerView.ItemDecoration decor, int index) {
-        recyclerView.addItemDecoration(decor, index);
+    public void addItemDecoration(RecyclerView.ItemDecoration itemDecoration, int index) {
+        recyclerView.addItemDecoration(itemDecoration, index);
     }
 
 
@@ -152,20 +153,20 @@ public class CustomRecyclerView extends FrameLayout {
         return recyclerView.getAdapter();
     }
 
-    public long getChildItemId(View child) {
-        return recyclerView.getChildItemId(child);
+    public long getChildItemId(View childView) {
+        return recyclerView.getChildItemId(childView);
     }
 
-    public int getChildLayoutPosition(View child) {
-        return recyclerView.getChildLayoutPosition(child);
+    public int getChildLayoutPosition(View childView) {
+        return recyclerView.getChildLayoutPosition(childView);
     }
 
-    public int getChildPosition(View child) {
-        return recyclerView.getChildPosition(child);
+    public int getChildPosition(View childView) {
+        return recyclerView.getChildPosition(childView);
     }
 
-    public RecyclerView.ViewHolder getChildViewHolder(View child) {
-        return recyclerView.getChildViewHolder(child);
+    public RecyclerView.ViewHolder getChildViewHolder(View childView) {
+        return recyclerView.getChildViewHolder(childView);
     }
 
     public RecyclerViewAccessibilityDelegate getCompatAccessibilityDelegate() {
@@ -244,8 +245,8 @@ public class CustomRecyclerView extends FrameLayout {
         recyclerView.onScrollStateChanged(state);
     }
 
-    public void removeItemDecoration(RecyclerView.ItemDecoration decor) {
-        recyclerView.removeItemDecoration(decor);
+    public void removeItemDecoration(RecyclerView.ItemDecoration itemDecoration) {
+        recyclerView.removeItemDecoration(itemDecoration);
     }
 
     public void removeOnChildAttachStateChangeListener(RecyclerView.OnChildAttachStateChangeListener listener) {
@@ -276,13 +277,13 @@ public class CustomRecyclerView extends FrameLayout {
         recyclerView.setHasFixedSize(hasFixedSize);
     }
 
-    public void setItemAnimator(RecyclerView.ItemAnimator animator) {
-        recyclerView.setItemAnimator(animator);
+    public void setItemAnimator(RecyclerView.ItemAnimator itemAnimator) {
+        recyclerView.setItemAnimator(itemAnimator);
     }
 
 
-    public void setLayoutManager(RecyclerView.LayoutManager layout) {
-        recyclerView.setLayoutManager(layout);
+    public void setLayoutManager(RecyclerView.LayoutManager layoutManager) {
+        recyclerView.setLayoutManager(layoutManager);
     }
 
     public void setRecycledViewPool(RecyclerView.RecycledViewPool pool) {
@@ -318,48 +319,48 @@ public class CustomRecyclerView extends FrameLayout {
     }
 
 
-    private static class WWRecyclerView extends RecyclerView {
-        private HeaderRecyclerAdapter hfAdapter;
+    private static class MyRecyclerView extends RecyclerView {
+        private HeaderRecyclerAdapter headerRecyclerAdapter;
 
-        public WWRecyclerView(Context context) {
+        public MyRecyclerView(Context context) {
             super(context);
         }
 
-        public WWRecyclerView(Context context, AttributeSet attrs) {
+        public MyRecyclerView(Context context, AttributeSet attrs) {
             super(context, attrs);
         }
 
-        public WWRecyclerView(Context context, AttributeSet attrs, int defStyle) {
+        public MyRecyclerView(Context context, AttributeSet attrs, int defStyle) {
             super(context, attrs, defStyle);
         }
 
         @Override
         public void setAdapter(Adapter adapter) {
-            hfAdapter = new HeaderRecyclerAdapter(adapter);
-            super.setAdapter(hfAdapter);
+            headerRecyclerAdapter = new HeaderRecyclerAdapter(adapter);
+            super.setAdapter(headerRecyclerAdapter);
         }
 
-        public void addHeadView(View v) {
-            if (hfAdapter != null) {
-                hfAdapter.addHeaderView(v);
+        public void addHeaderView(View v) {
+            if (headerRecyclerAdapter != null) {
+                headerRecyclerAdapter.addHeaderView(v);
             }
         }
 
-        public void removeHeadView(View v) {
-            if (hfAdapter != null) {
-                hfAdapter.removeHeaderView(v);
+        public void removeHeaderView(View v) {
+            if (headerRecyclerAdapter != null) {
+                headerRecyclerAdapter.removeHeaderView(v);
             }
         }
 
         public void addFooterView(View v) {
-            if (hfAdapter != null) {
-                hfAdapter.addFooterView(v);
+            if (headerRecyclerAdapter != null) {
+                headerRecyclerAdapter.addFooterView(v);
             }
         }
 
         public void removeFooterView(View v) {
-            if (hfAdapter != null) {
-                hfAdapter.removeFooterView(v);
+            if (headerRecyclerAdapter != null) {
+                headerRecyclerAdapter.removeFooterView(v);
             }
         }
     }
@@ -372,16 +373,13 @@ public class CustomRecyclerView extends FrameLayout {
         private static final int TYPE_HEADER_VIEW = Integer.MIN_VALUE;
         private static final int TYPE_FOOTER_VIEW = Integer.MIN_VALUE + 1;
 
-        /**
-         * RecyclerView使用的，真正的Adapter
-         */
+        //RecyclerView真正使用的Adapter
         private RecyclerView.Adapter<RecyclerView.ViewHolder> innerAdapter;
 
-        private ArrayList<View> mHeaderViews = new ArrayList<>();
-        private ArrayList<View> mFooterViews = new ArrayList<>();
+        private ArrayList<View> headerViewsArrayList = new ArrayList<>();
+        private ArrayList<View> footerViewsArrayList = new ArrayList<>();
 
-        private RecyclerView.AdapterDataObserver dataObserver
-                = new RecyclerView.AdapterDataObserver() {
+        private RecyclerView.AdapterDataObserver dataObserver = new RecyclerView.AdapterDataObserver() {
 
             @Override
             public void onChanged() {
@@ -411,8 +409,7 @@ public class CustomRecyclerView extends FrameLayout {
             public void onItemRangeMoved(int fromPosition, int toPosition, int itemCount) {
                 super.onItemRangeMoved(fromPosition, toPosition, itemCount);
                 int headerViewsCountCount = getHeaderViewsCount();
-                notifyItemRangeChanged(fromPosition + headerViewsCountCount,
-                        toPosition + headerViewsCountCount + itemCount);
+                notifyItemRangeChanged(fromPosition + headerViewsCountCount, toPosition + headerViewsCountCount + itemCount);
             }
         };
 
@@ -423,11 +420,7 @@ public class CustomRecyclerView extends FrameLayout {
             setAdapter(innerAdapter);
         }
 
-        /**
-         * 设置adapter
-         *
-         * @param adapter
-         */
+        //设置Adapter
         public void setAdapter(RecyclerView.Adapter<RecyclerView.ViewHolder> adapter) {
 
             if (adapter != null) {
@@ -452,57 +445,47 @@ public class CustomRecyclerView extends FrameLayout {
         public void addHeaderView(View header) {
 
             if (header == null) {
-                throw new RuntimeException("header is null");
+                throw new RuntimeException("The header is null");
             }
-
-            mHeaderViews.add(header);
+            headerViewsArrayList.add(header);
             this.notifyDataSetChanged();
         }
 
         public void addFooterView(View footer) {
-
             if (footer == null) {
-                throw new RuntimeException("footer is null");
+                throw new RuntimeException("The footer is null");
             }
-
-            mFooterViews.add(footer);
+            footerViewsArrayList.add(footer);
             this.notifyDataSetChanged();
         }
 
-        /**
-         * 返回第一个FoView
-         *
-         * @return
-         */
+
+        //获取第一个footerView
         public View getFooterView() {
-            return getFooterViewsCount() > 0 ? mFooterViews.get(0) : null;
+            return getFooterViewsCount() > 0 ? footerViewsArrayList.get(0) : null;
         }
 
-        /**
-         * 返回第一个HeaderView
-         *
-         * @return
-         */
+        //获取第一个headerView
         public View getHeaderView() {
-            return getHeaderViewsCount() > 0 ? mHeaderViews.get(0) : null;
+            return getHeaderViewsCount() > 0 ? headerViewsArrayList.get(0) : null;
         }
 
         public void removeHeaderView(View view) {
-            mHeaderViews.remove(view);
+            headerViewsArrayList.remove(view);
             this.notifyDataSetChanged();
         }
 
         public void removeFooterView(View view) {
-            mFooterViews.remove(view);
+            footerViewsArrayList.remove(view);
             this.notifyDataSetChanged();
         }
 
         public int getHeaderViewsCount() {
-            return mHeaderViews.size();
+            return headerViewsArrayList.size();
         }
 
         public int getFooterViewsCount() {
-            return mFooterViews.size();
+            return footerViewsArrayList.size();
         }
 
         public boolean isHeader(int position) {
@@ -518,9 +501,9 @@ public class CustomRecyclerView extends FrameLayout {
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             int headerViewsCountCount = getHeaderViewsCount();
             if (viewType < TYPE_HEADER_VIEW + headerViewsCountCount) {
-                return new ViewHolder(mHeaderViews.get(viewType - TYPE_HEADER_VIEW));
+                return new ViewHolder(headerViewsArrayList.get(viewType - TYPE_HEADER_VIEW));
             } else if (viewType >= TYPE_FOOTER_VIEW && viewType < Integer.MAX_VALUE / 2) {
-                return new ViewHolder(mFooterViews.get(viewType - TYPE_FOOTER_VIEW));
+                return new ViewHolder(footerViewsArrayList.get(viewType - TYPE_FOOTER_VIEW));
             } else {
                 return innerAdapter.onCreateViewHolder(parent, viewType - Integer.MAX_VALUE / 2);
             }
