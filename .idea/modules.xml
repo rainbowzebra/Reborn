@@ -10,6 +10,7 @@
       <module fileurl="file://$PROJECT_DIR$/RecyclerView02/RecyclerView02.iml" filepath="$PROJECT_DIR$/RecyclerView02/RecyclerView02.iml" />
       <module fileurl="file://$PROJECT_DIR$/RecyclerView03/RecyclerView03.iml" filepath="$PROJECT_DIR$/RecyclerView03/RecyclerView03.iml" />
       <module fileurl="file://$PROJECT_DIR$/RecyclerView04/RecyclerView04.iml" filepath="$PROJECT_DIR$/RecyclerView04/RecyclerView04.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Retrofit01/Retrofit01.iml" filepath="$PROJECT_DIR$/Retrofit01/Retrofit01.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

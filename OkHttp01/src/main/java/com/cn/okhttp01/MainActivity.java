@@ -32,12 +32,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         init();
-        testGet1();
-        testGet2();
+        //testGet1();
+        //testGet2();
         testPost1();
-        testPost2();
-        testDownload();
-        testUpload();
+        //testPost2();
+        //testDownload();
+        //testUpload();
     }
     private void init(){
         mContext=this;
@@ -107,15 +107,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try{
-                    String url="your url";
+                    String url="http://apis.baidu.com/txapi/world/world";
                     OkHttpClient okHttpClient=new OkHttpClient();
                     Request.Builder requestBuilder=new Request.Builder();
                     FormBody.Builder formBodyBuilder=new FormBody.Builder();
-                    formBodyBuilder.add("userName","lr");
-                    formBodyBuilder.add("passWord","1");
+                    formBodyBuilder.add("num","10");
+                    formBodyBuilder.add("page","1");
                     RequestBody requestBody=formBodyBuilder.build();
                     requestBuilder.url(url);
                     requestBuilder.post(requestBody);
+                    requestBuilder.addHeader("apikey","81bf9da930c7f9825a3c3383f1d8d766");
                     Request request=requestBuilder.build();
                     Response response=okHttpClient.newCall(request).execute();
                     int code=response.code();
