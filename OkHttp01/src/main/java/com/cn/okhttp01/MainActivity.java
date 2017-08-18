@@ -107,12 +107,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try{
-                    String url="http://apis.baidu.com/txapi/world/world";
+                    String url="http://106.14.136.52:8080/user/login";
                     OkHttpClient okHttpClient=new OkHttpClient();
                     Request.Builder requestBuilder=new Request.Builder();
                     FormBody.Builder formBodyBuilder=new FormBody.Builder();
-                    formBodyBuilder.add("num","10");
-                    formBodyBuilder.add("page","1");
+                    formBodyBuilder.add("username","andy");
+                    formBodyBuilder.add("password","123456");
                     RequestBody requestBody=formBodyBuilder.build();
                     requestBuilder.url(url);
                     requestBuilder.post(requestBody);
@@ -138,12 +138,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try{
-                    String url="your url";
+                    String url="http://106.14.136.52:8080/user/login";
                     OkHttpClient okHttpClient=new OkHttpClient();
                     Request.Builder requestBuilder=new Request.Builder();
                     FormBody.Builder formBodyBuilder=new FormBody.Builder();
-                    formBodyBuilder.add("userName","lr");
-                    formBodyBuilder.add("passWord","1");
+                    formBodyBuilder.add("username","andy");
+                    formBodyBuilder.add("password","123456");
                     RequestBody requestBody=formBodyBuilder.build();
                     requestBuilder.url(url);
                     requestBuilder.post(requestBody);

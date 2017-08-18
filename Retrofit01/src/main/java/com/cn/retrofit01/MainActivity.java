@@ -3,7 +3,6 @@ package com.cn.retrofit01;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-
 import java.util.HashMap;
 import java.util.List;
 import retrofit2.Call;
@@ -29,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                test3();
+                test5();
             }
         }).start();
     }
@@ -98,6 +97,52 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<Repo>> call, Throwable t) {
+                Log.i(TAG,"onFailure");
+            }
+        });
+    }
+
+    //Post携带参数(方式一)
+    public void test4(){
+        Retrofit retrofit=new Retrofit.Builder()
+                .baseUrl("http://106.14.136.52:8080/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        LoginService loginService=retrofit.create(LoginService.class);
+        Call<LoginResult> call=loginService.login1("andy","123456");
+        call.enqueue(new Callback<LoginResult>() {
+            @Override
+            public void onResponse(Call<LoginResult> call, Response<LoginResult> response) {
+                Log.i(TAG,"onResponse "+response.body().getMessage());
+            }
+
+            @Override
+            public void onFailure(Call<LoginResult> call, Throwable t) {
+                Log.i(TAG,"onFailure");
+            }
+        });
+    }
+
+
+    //Post携带参数(方式二)
+    public void test5(){
+        Retrofit retrofit=new Retrofit.Builder()
+                .baseUrl("http://106.14.136.52:8080/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        LoginService loginService=retrofit.create(LoginService.class);
+        HashMap<String,String> hashMap=new HashMap<>();
+        hashMap.put("username","andy");
+        hashMap.put("password","123456");
+        Call<LoginResult> call=loginService.login2(hashMap);
+        call.enqueue(new Callback<LoginResult>() {
+            @Override
+            public void onResponse(Call<LoginResult> call, Response<LoginResult> response) {
+                Log.i(TAG,"onResponse "+response.body().getMessage());
+            }
+
+            @Override
+            public void onFailure(Call<LoginResult> call, Throwable t) {
                 Log.i(TAG,"onFailure");
             }
         });
