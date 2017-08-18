@@ -3,6 +3,8 @@ package com.cn.retrofit01;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+
+import java.util.HashMap;
 import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -27,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                test1();
+                test3();
             }
         }).start();
     }
@@ -54,15 +56,40 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    //带参的Get请求
-    //https://api.github.com/users/octocat/repos
+    //带参数的Get请求
+    //https://api.github.com/users/octocat/repos?sort=desc
     public void test2(){
         Retrofit retrofit=new Retrofit.Builder()
                 .baseUrl("https://api.github.com/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        GitHubService1 gitHubService=retrofit.create(GitHubService1.class);
-        Call<List<Repo>> call=gitHubService.listRepos("octocat");
+        GitHubService2 gitHubService=retrofit.create(GitHubService2.class);
+        Call<List<Repo>> call=gitHubService.listRepos("octocat","desc");
+        call.enqueue(new Callback<List<Repo>>() {
+            @Override
+            public void onResponse(Call<List<Repo>> call, Response<List<Repo>> response) {
+                Log.i(TAG,"onResponse");
+            }
+
+            @Override
+            public void onFailure(Call<List<Repo>> call, Throwable t) {
+                Log.i(TAG,"onFailure");
+            }
+        });
+    }
+
+    //带多个参数的Get请求
+    //https://api.github.com/users/octocat/repos?sort=desc&page=1
+    public void test3(){
+        Retrofit retrofit=new Retrofit.Builder()
+                .baseUrl("https://api.github.com/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        GitHubService3 gitHubService=retrofit.create(GitHubService3.class);
+        HashMap<String,String> queryMap=new HashMap<>();
+        queryMap.put("sort","desc");
+        queryMap.put("page","1");
+        Call<List<Repo>> call=gitHubService.listRepos("octocat",queryMap);
         call.enqueue(new Callback<List<Repo>>() {
             @Override
             public void onResponse(Call<List<Repo>> call, Response<List<Repo>> response) {
