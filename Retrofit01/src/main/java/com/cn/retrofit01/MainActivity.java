@@ -32,13 +32,14 @@ public class MainActivity extends AppCompatActivity {
         }).start();
     }
 
+    //简单的Get请求
     //https://api.github.com/users/octocat/repos
     public void test1(){
         Retrofit retrofit=new Retrofit.Builder()
                 .baseUrl("https://api.github.com/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        GitHubService gitHubService=retrofit.create(GitHubService.class);
+        GitHubService1 gitHubService=retrofit.create(GitHubService1.class);
         Call<List<Repo>> call=gitHubService.listRepos("octocat");
         call.enqueue(new Callback<List<Repo>>() {
             @Override
@@ -52,4 +53,28 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    //带参的Get请求
+    //https://api.github.com/users/octocat/repos
+    public void test2(){
+        Retrofit retrofit=new Retrofit.Builder()
+                .baseUrl("https://api.github.com/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        GitHubService1 gitHubService=retrofit.create(GitHubService1.class);
+        Call<List<Repo>> call=gitHubService.listRepos("octocat");
+        call.enqueue(new Callback<List<Repo>>() {
+            @Override
+            public void onResponse(Call<List<Repo>> call, Response<List<Repo>> response) {
+                Log.i(TAG,"onResponse");
+            }
+
+            @Override
+            public void onFailure(Call<List<Repo>> call, Throwable t) {
+                Log.i(TAG,"onFailure");
+            }
+        });
+    }
+
+
 }

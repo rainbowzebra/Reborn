@@ -10,7 +10,7 @@ import retrofit2.http.Path;
  * 博客地址：http://blog.csdn.net/lfdfhl
  */
 
-public interface GitHubService {
+public interface GitHubService1 {
     @GET("users/{user}/repos")
     Call<List<Repo>> listRepos(@Path("user") String user);
 }
