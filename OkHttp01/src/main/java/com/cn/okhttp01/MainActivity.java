@@ -48,12 +48,15 @@ public class MainActivity extends AppCompatActivity {
 
     private void testOkHttp(){
         testUpload();
+        //testDownload();
     }
 
     public void verifyStoragePermissions(Activity activity) {
         int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         if (permission != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(activity, PERMISSIONS, REQUEST_CODE);
+        }else{
+            testOkHttp();
         }
     }
 
@@ -208,7 +211,7 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 try{
                     String url="http://img.blog.csdn.net/20161023140032428";
-                    final File downloadFile=new File(getExternalCacheDir().toString()+File.separator+"test.jpg");
+                    final File downloadFile=new File(getExternalCacheDir().toString()+File.separator+"test9527.jpg");
                     OkHttpClient okHttpClient=new OkHttpClient();
                     Request.Builder requestBuilder=new Request.Builder();
                     requestBuilder.url(url);
@@ -217,11 +220,12 @@ public class MainActivity extends AppCompatActivity {
                     call.enqueue(new Callback() {
                         @Override
                         public void onFailure(Call call, IOException e) {
-
+                            Log.i(TAG,"onFailure");
                         }
 
                         @Override
                         public void onResponse(Call call, Response response) throws IOException {
+                            Log.i(TAG,"onResponse "+response.code());
                             if(response.isSuccessful()){
                                 InputStream inputStream=response.body().byteStream();
                                 FileOutputStream fileOutputStream=new FileOutputStream(downloadFile);
@@ -241,7 +245,7 @@ public class MainActivity extends AppCompatActivity {
                     });
 
                 }catch (Exception e){
-
+                    Log.i(TAG,"============="+e.toString());
                 }
             }
         }).start();
