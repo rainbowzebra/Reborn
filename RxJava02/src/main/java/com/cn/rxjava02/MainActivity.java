@@ -3,6 +3,11 @@ package com.cn.rxjava02;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+
+import java.util.List;
+
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
@@ -12,6 +17,11 @@ import io.reactivex.annotations.NonNull;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * 原创作者：谷哥的小弟
@@ -23,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        test05();
+        test06();
     }
 
     /**
@@ -241,5 +251,47 @@ public class MainActivity extends AppCompatActivity {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer);
 
+    }
+
+    /**
+     * Retrofit结合RxJava进行网络请求
+     * 请注意：RxJava2CallAdapterFactory
+     */
+    private void test06(){
+
+        Retrofit retrofit=new Retrofit.Builder()
+                .baseUrl("https://api.github.com/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build();
+
+        Observer<List<Repo>> observer=new Observer<List<Repo>>() {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+                Log.i(Constant.TAG,"Observer onSubscribe");
+            }
+
+            @Override
+            public void onNext(@NonNull List<Repo> repos) {
+                Log.i(Constant.TAG,"Observer onNext size="+repos.size());
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+                Log.i(Constant.TAG,"Observer onError");
+            }
+
+            @Override
+            public void onComplete() {
+                Log.i(Constant.TAG,"Observer onComplete");
+            }
+        };
+
+        GitHubService gitHubService=retrofit.create(GitHubService.class);
+
+        gitHubService.listRepos("octocat")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(observer);
     }
 }
