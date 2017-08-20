@@ -1,1 +1,1 @@
-include ':app', ':RecyclerView01', ':RecyclerView02', ':OkHttp01', ':OkHttp02', ':RecyclerView03', ':Glide01', ':RecyclerView04', ':Retrofit01', ':Retrofit02'
+include ':app', ':RecyclerView01', ':RecyclerView02', ':OkHttp01', ':OkHttp02', ':RecyclerView03', ':Glide01', ':RecyclerView04', ':Retrofit01', ':Retrofit02', ':RxJava01', ':RxJava02'

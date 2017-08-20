@@ -12,6 +12,8 @@
       <module fileurl="file://$PROJECT_DIR$/RecyclerView04/RecyclerView04.iml" filepath="$PROJECT_DIR$/RecyclerView04/RecyclerView04.iml" />
       <module fileurl="file://$PROJECT_DIR$/Retrofit01/Retrofit01.iml" filepath="$PROJECT_DIR$/Retrofit01/Retrofit01.iml" />
       <module fileurl="file://$PROJECT_DIR$/Retrofit02/Retrofit02.iml" filepath="$PROJECT_DIR$/Retrofit02/Retrofit02.iml" />
+      <module fileurl="file://$PROJECT_DIR$/RxJava01/RxJava01.iml" filepath="$PROJECT_DIR$/RxJava01/RxJava01.iml" />
+      <module fileurl="file://$PROJECT_DIR$/RxJava02/RxJava02.iml" filepath="$PROJECT_DIR$/RxJava02/RxJava02.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

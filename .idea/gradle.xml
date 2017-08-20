@@ -17,6 +17,8 @@
             <option value="$PROJECT_DIR$/RecyclerView04" />
             <option value="$PROJECT_DIR$/Retrofit01" />
             <option value="$PROJECT_DIR$/Retrofit02" />
+            <option value="$PROJECT_DIR$/RxJava01" />
+            <option value="$PROJECT_DIR$/RxJava02" />
             <option value="$PROJECT_DIR$/app" />
           </set>
         </option>
